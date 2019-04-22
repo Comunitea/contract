@@ -2,9 +2,9 @@
 <odoo>
 
     <record id="act_recurring_sales" model="ir.actions.act_window">
-        <field name="context">{'search_default_project_id':
+        <field name="context">{'search_default_analytic_account_id':
         [active_id],
-        'default_project_id': active_id}
+        'default_analytic_account_id': active_id}
         </field>
         <field name="name">Sales</field>
         <field name="res_model">sale.order</field>

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # © 2004-2010 OpenERP SA
 # © 2014 Angel Moya <angel.moya@domatix.com>
 # © 2015 Pedro M. Baeza <pedro.baeza@tecnativa.com>
@@ -51,7 +50,7 @@ class AccountAnalyticAccount(models.Model):
             'origin': self.name,
             'company_id': self.company_id.id,
             'user_id': self.partner_id.user_id.id,
-            'project_id': self.id
+            'analytic_account:_id': self.id
         })
         # Get other invoice values from partner onchange
         sale.onchange_partner_id()
