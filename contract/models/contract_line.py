@@ -44,7 +44,7 @@ class ContractLine(models.Model):
     date_end = fields.Date(string='Date End', index=True)
     recurring_next_date = fields.Date(string='Date of Next Invoice')
     last_date_invoiced = fields.Date(
-        string='Last Date Invoiced', readonly=True, copy=False
+        string='Last Date Invoiced', readonly=False, copy=False
     )
     next_period_date_start = fields.Date(
         string='Next Period Start',

@@ -24,7 +24,7 @@
                     <field name="next_period_date_end"/>
                 </group>
                 <group groups="base.group_no_one">
-                    <field name="last_date_invoiced" readonly="True"/>
+                    <field name="last_date_invoiced" />
                     <field name="termination_notice_date" readonly="True"/>
                 </group>
                 <group>
