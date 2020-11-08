@@ -9,3 +9,4 @@
 * Rafael Blasco <rafael.blasco@tecnativa.com>
 * Guillaume Vandamme <guillaume.vandamme@acsone.eu>
 * Raphaël Reverdy <raphael.reverdy@akretion.com>
+* Iván Antón <ozono@ozonomultimedia.com>
