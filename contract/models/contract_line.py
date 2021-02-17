@@ -127,6 +127,8 @@ class ContractLine(models.Model):
                 ) + relativedelta(days=1)
                 if rec.date_end and next_period_date_start > rec.date_end:
                     next_period_date_start = False
+                if rec.date_start and next_period_date_start < rec.date_start:
+                    next_period_date_start = rec.date_start
                 rec.next_period_date_start = next_period_date_start
             else:
                 super(ContractLine, rec)._compute_next_period_date_start()
