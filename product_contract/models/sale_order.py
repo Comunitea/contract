@@ -81,8 +81,8 @@ class SaleOrder(models.Model):
             )
             contract_templates = self.env["contract.template"]
             for order_line in line_to_create_contract:
-                contract_template = order_line.product_id.with_context(
-                    force_company=rec.company_id.id
+                contract_template = order_line.product_id.with_company(
+                    rec.company_id
                 ).property_contract_template_id
                 if not contract_template:
                     raise ValidationError(
@@ -94,8 +94,8 @@ class SaleOrder(models.Model):
                 contract_templates |= contract_template
             for contract_template in contract_templates:
                 order_lines = line_to_create_contract.filtered(
-                    lambda r, template=contract_template: r.product_id.with_context(
-                        force_company=r.order_id.company_id.id
+                    lambda r, template=contract_template: r.product_id.with_company(
+                        r.order_id.company_id
                     ).property_contract_template_id
                     == template
                 )
