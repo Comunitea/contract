@@ -30,8 +30,21 @@
                     <field string="Contracts" name="contract_count" widget="statinfo" />
                 </button>
             </xpath>
-            <xpath expr="//field[@name='order_line']" position="before">
+           <xpath expr="//field[@name='order_line']" position="before">
                 <field name="is_contract" attrs="{'invisible': []}" />
+            </xpath>
+
+            <xpath
+                expr="//field[@name='order_line']/tree//field[@name='price_total']"
+                position="after"
+            >
+                <field name="is_contract" invisible="1" />
+                <button
+                    name="action_contract_details"
+                    type="object"
+                    icon="fa-book"
+                    attrs="{'invisible': [('is_contract', '=', False)]}"
+                />
             </xpath>
             <xpath
                 expr="//field[@name='order_line']/form//field[@name='product_id']"
@@ -116,9 +129,87 @@
                     attrs="{'column_invisible': [('parent.is_contract', '=', False)]}"
                 />
             </xpath>
-            <xpath expr="//field[@name='order_line']/tree" position="attributes">
-                <attribute name="editable" />
-            </xpath>
+        </field>
+    </record>
+
+
+    <record id="view_sale_order_line_contract_details" model="ir.ui.view">
+        <field name="name">sale.order.line.contract.form</field>
+        <field name="model">sale.order.line</field>
+        <field name="priority">1000</field>
+        <field name="arch" type="xml">
+            <form string="Contract details">
+                <field name="company_id" invisible="1" />
+                <field name="order_partner_id" invisible="1" />
+                <group>
+                    <group>
+                        <field name="contract_template_id" attrs="{'invisible': []}" />
+                        <field
+                            name="contract_id"
+                            options='{"no_create": True}'
+                            attrs="{'invisible': [('is_contract', '=', False)]}"
+                            domain="['|',('contract_template_id','=',contract_template_id),
+                               ('contract_template_id','=',False),
+                               ('partner_id','=',order_partner_id),
+                               ('is_terminated','=',False),
+                               ]"
+                        />
+                        <field
+                            name="contract_line_id"
+                            attrs="{'invisible': [('is_contract', '=', False)]}"
+                            domain="[('contract_id','=',contract_id)]"
+                        />
+                    </group>
+                    <field name="is_contract" attrs="{'invisible': []}" />
+                    <separator
+                        colspan="4"
+                        string="Recurrence Invoicing"
+                        attrs="{'invisible': [('is_contract', '=', False)]}"
+                    />
+                    <group attrs="{'invisible': [('is_contract', '=', False)]}">
+                        <field name="recurring_rule_type" />
+                    </group>
+                    <group attrs="{'invisible': [('is_contract', '=', False)]}">
+                        <field name="recurring_invoicing_type" />
+                    </group>
+                    <group attrs="{'invisible': [('is_contract', '=', False)]}">
+                        <field
+                            name="date_start"
+                            attrs="{'required': [('is_contract', '=', True)]}"
+                        />
+                    </group>
+                    <group attrs="{'invisible': [('is_contract', '=', False)]}">
+                        <field
+                            name="date_end"
+                            attrs="{'required': [('is_contract', '=', True)]}"
+                        />
+                    </group>
+                    <group attrs="{'invisible': [('is_contract', '=', False)]}">
+                        <field name="is_auto_renew" />
+                    </group>
+                    <group attrs="{'invisible': [('is_auto_renew', '=', False)]}">
+                        <label for="auto_renew_interval" />
+                        <div>
+                            <field
+                                name="auto_renew_interval"
+                                class="oe_inline"
+                                nolabel="1"
+                                attrs="{'required':[('is_auto_renew', '=', True)]}"
+                            />
+                            <field
+                                name="auto_renew_rule_type"
+                                class="oe_inline"
+                                nolabel="1"
+                                attrs="{'required':[('is_auto_renew', '=', True)]}"
+                            />
+                        </div>
+                    </group>
+                </group>
+                <footer class="oe_edit_only">
+                    <button string="Confirm" special="save" class="oe_highlight" />
+                    <button string="Discard" special="cancel" />
+                </footer>
+            </form>
         </field>
     </record>
 </odoo>

@@ -272,3 +272,17 @@ class SaleOrderLine(models.Model):
         res = super()._get_to_invoice_qty()
         self.filtered("product_id.is_contract").update({"qty_to_invoice": 0.0})
         return res
+
+    def action_contract_details(self):
+        view = self.env.ref("product_contract.view_sale_order_line_contract_details")
+        return {
+            "name": _("Contract configuration"),
+            "type": "ir.actions.act_window",
+            "view_mode": "form",
+            "res_model": "sale.order.line",
+            "views": [(view.id, "form")],
+            "view_id": view.id,
+            "target": "new",
+            "res_id": self.id,
+            "context": self.env.context,
+        }
