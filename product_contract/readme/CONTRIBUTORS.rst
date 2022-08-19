@@ -4,4 +4,4 @@
 
   * Ernesto Tejeda
   * Pedro M. Baeza
-* Jesús Ventosinos Mayor <jesus@comunitea.com>
+  * Jesús Ventosinos Mayor <jesus@comunitea.com>
