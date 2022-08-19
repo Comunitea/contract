@@ -17,8 +17,10 @@ class ContractAbstractContractLine(models.AbstractModel):
     _description = "Abstract Recurring Contract Line"
 
     product_id = fields.Many2one("product.product", string="Product")
-
     name = fields.Text(string="Description", required=True)
+    partner_id = fields.Many2one(
+        comodel_name="res.partner", related="contract_id.partner_id"
+    )
     quantity = fields.Float(default=1.0, required=True)
     allowed_uom_categ_id = fields.Many2one(related="product_id.uom_id.category_id")
     uom_id = fields.Many2one(
@@ -182,6 +184,7 @@ class ContractAbstractContractLine(models.AbstractModel):
         "quantity",
         "contract_id.pricelist_id",
         "contract_id.partner_id",
+        "uom_id",
     )
     def _compute_price_unit(self):
         """Get the specific price if no auto-price, and the price obtained
@@ -201,10 +204,11 @@ class ContractAbstractContractLine(models.AbstractModel):
                         line.quantity,
                     ),
                     pricelist=pricelist.id,
-                    partner=line.contract_id.partner_id.id,
+                    partner=line.contract_id.partner_id,
                     date=line.env.context.get(
                         "old_date", fields.Date.context_today(line)
                     ),
+                    uom=line.uom_id.id,
                 )
                 line.price_unit = product.price
             else:
