@@ -25,7 +25,7 @@ class ContractContract(models.Model):
                 "origin": self.name,
                 "company_id": self.company_id.id,
                 "user_id": self.partner_id.user_id.id,
-                "analytic_account_id": self.group_id.id,
+                # "analytic_account_id": self.group_id.id,invoke restart
             }
         )
         if self.payment_term_id:
@@ -56,11 +56,11 @@ class ContractContract(models.Model):
             "name": "Sales Orders",
             "res_model": "sale.order",
             "view_type": "form",
-            "view_mode": "tree,kanban,form,calendar,pivot,graph,activity",
+            "view_mode": "list,kanban,form,calendar,pivot,graph,activity",
             "domain": [("id", "in", self._get_related_sales().ids)],
         }
         if tree_view and form_view:
-            action["views"] = [(tree_view.id, "tree"), (form_view.id, "form")]
+            action["views"] = [(tree_view.id, "list"), (form_view.id, "form")]
         return action
 
     def recurring_create_sale(self):
@@ -108,7 +108,7 @@ class ContractContract(models.Model):
                 if invoice_line_values:
                     sale_values["order_line"].append((0, 0, invoice_line_values))
             sales_values.append(sale_values)
-            contract_lines._update_recurring_next_date()
+            contract_lines._update_last_date_invoiced()
         return sales_values
 
     def _recurring_create_sale(self, date_ref=False):
