@@ -1,0 +1,1 @@
+odoo-addon-contract_sale @ git+https://github.com/OCA/contract.git@refs/pull/1138/head#subdirectory=contract_sale
